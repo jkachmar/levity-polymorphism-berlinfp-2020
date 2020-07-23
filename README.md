@@ -1,6 +1,14 @@
 # Levity Polymorphism
 ## ...and other things that aren't discussed very often
 
+# Presentation
+
+A big thanks to [Steven Syrek](https://github.com/sjsyrek) for not only
+organizing this presentation, as well as many more, and publishing them on
+YouTube!
+
+[![Levity Polymorphism Recording](./presentation_screenshot.png)](https://www.youtube.com/watch?v=Ip51xutCDPo)
+
 # Quickstart
 
 A compiled copy of these slides can be found [here](./slides.pdf).
