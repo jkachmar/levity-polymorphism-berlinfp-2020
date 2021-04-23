@@ -11,7 +11,7 @@ mainfont: Open Sans
 mainfontoptions: Scale=1
 sansfont: Open Sans
 sansfontoptions: Scale=1
-monofont: Fira Code
+monofont: 'Fira Code'
 monofontoptions: Scale=0.85
 
 header-includes:
@@ -33,7 +33,7 @@ header-includes:
 . . .
 
 * Much of what follows is being actively researched
-  * Subtle changes may be present various versious GHC
+  * Things may change subtly between releases of GHC
 
 . . .
 
@@ -49,6 +49,9 @@ Haskell is known for being:
 * pure
 * functional
 * statically typed
+
+. . .
+
 * **lazy**
 * **high-level**
 * **higher-kinded**
@@ -57,11 +60,11 @@ Haskell is known for being:
 
 Haskell is **not** known for:
 
-* being easy to reason about in space/time complexity
-  * a consequence of laziness
+* "obvious" space/time complexity
+  * consequence of lazy evaluation
 
-* providing precise tools to manage memory allocation 
-  * a consequence of being "high-level"[^high-level]
+* precise control over memory allocation
+  * not uncommon in "high-level"[^high-level] languages
 
 [^high-level]: "High-level" and "low-level" are fairly squishy terms; for the
 sake of example consider Python to be high-level and C to be low-level
@@ -91,6 +94,8 @@ False :: Boolean
 λ> :kind Boolean
 Boolean :: Type
 ```
+
+. . .
 
 Kinds are like "types of types"
 
@@ -156,7 +161,7 @@ data Boolean = True | False | ⊥
 
 ## Laziness, Lifted Types, and Levity Polymorphism
 
-What _actually_ is a `Type`?
+What _is_ a `Type`, anyway?
 
 . . .
 
@@ -166,14 +171,15 @@ data RuntimeRep = LiftedRep | UnliftedRep | Int8Rep | ...
 type Type = (TYPE 'LiftedRep)
 ```
 
-GHC's types are parameterized by their representation
-
-* `RuntimeRep` enumerates _all_ runtime representations
-* `TYPE LiftedRep`: lifted types
-  * Lifted types are lazy
-* `TYPE UnliftedRep`: unlifted types
-  * Unlifted types are strict (opposite of lazy)
-* `TYPE IntRep`: unlifted 8-bit signed integers
+* `TYPE` is the abstract "kind" of valid Haskell types
+  * Parameterized by runtime representation
+* `TYPE LiftedRep` is a "lifted type"
+  * **Lazy** types
+  * "Normal" Haskell `Type`s
+* `TYPE UnliftedRep` is an "unlifted type"
+  * **Strict** types
+* `TYPE IntRep` is a "primitive type"
+  * Strict 8-bit signed integer types
 
 ## Levity Polymorphism
 
@@ -192,7 +198,9 @@ f $ x = f x
 
 * `f :: (a :: Type) -> (b :: TYPE r)`
   * Accepts a lifted type
-  * Returns a type that is _polymorphic_ in its representation
+  * Returns a type that is _levity-polymorphic_
+    * i.e. polymorphic over its "liftedness"
+    * More precisely it is polymorphic over its _representation_
 
 ## Levity Polymorphism
 
@@ -213,7 +221,7 @@ Recap
 * Haskell is a lazy language
 * Lazy values are "lifted"
 * Strict values are "unlifted"
-* Levity polymorphism abstracts over the distinction
+* Levity polymorphism abstracts over this distinction
 
 ## {.standout}
 
@@ -346,7 +354,7 @@ GHC _should_ optimize the former down to the latter[^unpacked_sum]
 
 [^unpacked_sum]: https://gitlab.haskell.org/ghc/ghc/-/wikis/unpacked-sum-types
 
-## Zero-Cost Abstractions in Haskell
+## Low-Overhead Abstractions in Haskell
 
 ```haskell
 type Maybe# a = (# a | (##) #)
