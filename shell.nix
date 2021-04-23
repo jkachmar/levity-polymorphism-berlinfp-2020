@@ -15,10 +15,7 @@ let
 
   fonts = pkgs.makeFontsConf {
     fontDirectories = [
-      pkgs.fira
       pkgs.fira-code
-
-      pkgs.inconsolata
       pkgs.open-sans
     ];
   };
